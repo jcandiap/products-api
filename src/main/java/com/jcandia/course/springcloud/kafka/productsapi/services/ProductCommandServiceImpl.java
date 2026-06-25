@@ -38,7 +38,13 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public Reply<?> sendReadAndAwait(Long id, Duration timeout) {
-        Command<ProductDTO> cmd = new Command<>("READ", id, null);
+        Command<ProductDTO> cmd = new Command<>("FIND", id, null);
+        return sendAndAwait(cmd, timeout);
+    }
+
+    @Override
+    public Reply<?> sendReadAllAndAwait(Duration timeout) {
+        Command<Object> cmd = new Command<>("FIND_ALL", null, null);
         return sendAndAwait(cmd, timeout);
     }
 

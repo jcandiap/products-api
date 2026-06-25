@@ -33,6 +33,12 @@ public class ProductController {
         return getResponseEntity(reply);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        Reply<?> reply = commandService.sendReadAllAndAwait(Duration.ofSeconds(5));
+        return getResponseEntity(reply);
+    }
+
     private static @NonNull ResponseEntity<?> getResponseEntity(Reply<?> reply) {
         if( "SUCCESS".equalsIgnoreCase(reply.status()) ) {
             return ResponseEntity.ok(reply.body());
