@@ -45,6 +45,12 @@ public class ProductController {
         return getResponseEntity(reply);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        Reply<?> reply = commandService.sendDeleteAndAwait(id, Duration.ofSeconds(10));
+        return getResponseEntity(reply);
+    }
+
     private static @NonNull ResponseEntity<?> getResponseEntity(Reply<?> reply) {
         if( "SUCCESS".equalsIgnoreCase(reply.status()) ) {
             return ResponseEntity.ok(reply.body());
