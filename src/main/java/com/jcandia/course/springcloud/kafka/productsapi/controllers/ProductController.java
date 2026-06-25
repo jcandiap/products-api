@@ -23,32 +23,27 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ProductDTO productDTO) {
-        Reply<?> reply = commandService.sendCreateAndAwait(productDTO, Duration.ofSeconds(5));
-        return getResponseEntity(reply);
+        return getResponseEntity(commandService.sendCreateAndAwait(productDTO, Duration.ofSeconds(5)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Reply<?> reply = commandService.sendReadAndAwait(id, Duration.ofSeconds(5));
-        return getResponseEntity(reply);
+        return getResponseEntity(commandService.sendReadAndAwait(id, Duration.ofSeconds(5)));
     }
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        Reply<?> reply = commandService.sendReadAllAndAwait(Duration.ofSeconds(5));
-        return getResponseEntity(reply);
+        return getResponseEntity(commandService.sendReadAllAndAwait(Duration.ofSeconds(5)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
-        Reply<?> reply = commandService.sendUpdateAndAwait(productDTO, id, Duration.ofSeconds(5));
-        return getResponseEntity(reply);
+        return getResponseEntity(commandService.sendUpdateAndAwait(productDTO, id, Duration.ofSeconds(5)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Reply<?> reply = commandService.sendDeleteAndAwait(id, Duration.ofSeconds(10));
-        return getResponseEntity(reply);
+        return getResponseEntity(commandService.sendDeleteAndAwait(id, Duration.ofSeconds(10)));
     }
 
     private static @NonNull ResponseEntity<?> getResponseEntity(Reply<?> reply) {
