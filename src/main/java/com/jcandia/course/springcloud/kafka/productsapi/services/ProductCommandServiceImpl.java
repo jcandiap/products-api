@@ -48,6 +48,12 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         return sendAndAwait(cmd, timeout);
     }
 
+    @Override
+    public Reply<?> sendUpdateAndAwait(ProductDTO productDTO, Long id, Duration timeout) {
+        Command<ProductDTO> cmd = new Command<>("UPDATE", id, productDTO);
+        return sendAndAwait(cmd, timeout);
+    }
+
     private Reply<?> sendAndAwait(Command<?> cmd, Duration timeout) {
         String correlationId = UUID.randomUUID().toString();
 

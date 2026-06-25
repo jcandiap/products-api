@@ -10,5 +10,6 @@ public interface ProductCommandService {
     Reply<?> sendCreateAndAwait(ProductDTO productDTO, Duration timeout);
     Reply<?> sendReadAndAwait(Long id, Duration timeout);
     Reply<?> sendReadAllAndAwait(Duration timeout);
+    Reply<?> sendUpdateAndAwait(ProductDTO productDTO, Long id, Duration timeout);
 
 }
