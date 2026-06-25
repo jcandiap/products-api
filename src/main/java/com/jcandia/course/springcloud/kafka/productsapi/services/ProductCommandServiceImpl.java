@@ -33,13 +33,23 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     @Override
     public Reply<?> sendCreateAndAwait(ProductDTO productDTO, Duration timeout) {
         Command<ProductDTO> cmd = new Command<>("CREATE", null, productDTO);
+        return sendAndAwait(cmd, timeout);
+    }
+
+    @Override
+    public Reply<?> sendReadAndAwait(Long id, Duration timeout) {
+        Command<ProductDTO> cmd = new Command<>("READ", id, null);
+        return sendAndAwait(cmd, timeout);
+    }
+
+    private Reply<?> sendAndAwait(Command<?> cmd, Duration timeout) {
         String correlationId = UUID.randomUUID().toString();
 
         logger.info("[API PRODUCTS] Creating product with correlationId {}", correlationId);
 
         CompletableFuture<Reply<?>> future = replyInbox.register(correlationId);
 
-        Message<Command<ProductDTO>> message = MessageBuilder.withPayload(cmd)
+        var message = MessageBuilder.withPayload(cmd)
                 .setHeader("correlationId", correlationId)
                 .build();
 

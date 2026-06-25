@@ -4,11 +4,9 @@ import com.jcandia.course.springcloud.kafka.productsapi.models.Reply;
 import com.jcandia.course.springcloud.kafka.productsapi.models.dto.ProductDTO;
 import com.jcandia.course.springcloud.kafka.productsapi.services.ProductCommandService;
 import jakarta.validation.Valid;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
@@ -26,7 +24,16 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ProductDTO productDTO) {
         Reply<?> reply = commandService.sendCreateAndAwait(productDTO, Duration.ofSeconds(5));
+        return getResponseEntity(reply);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        Reply<?> reply = commandService.sendReadAndAwait(id, Duration.ofSeconds(5));
+        return getResponseEntity(reply);
+    }
+
+    private static @NonNull ResponseEntity<?> getResponseEntity(Reply<?> reply) {
         if( "SUCCESS".equalsIgnoreCase(reply.status()) ) {
             return ResponseEntity.ok(reply.body());
         }
