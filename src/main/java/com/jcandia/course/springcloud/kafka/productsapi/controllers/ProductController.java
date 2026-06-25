@@ -1,6 +1,7 @@
 package com.jcandia.course.springcloud.kafka.productsapi.controllers;
 
 import com.jcandia.course.springcloud.kafka.productsapi.models.Reply;
+import com.jcandia.course.springcloud.kafka.productsapi.models.ReplyStatus;
 import com.jcandia.course.springcloud.kafka.productsapi.models.dto.ProductDTO;
 import com.jcandia.course.springcloud.kafka.productsapi.services.ProductCommandService;
 import jakarta.validation.Valid;
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     private static @NonNull ResponseEntity<?> getResponseEntity(Reply<?> reply) {
-        if( "SUCCESS".equalsIgnoreCase(reply.status()) ) {
+        if( reply.status().isSuccess() ) {
             return ResponseEntity.ok(reply.body());
         }
 
